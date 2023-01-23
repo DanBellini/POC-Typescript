@@ -1,8 +1,8 @@
-import joi from "joi"
-import { reminder } from "../protocols/protocols"
+import joi from "joi";
+import { Reminder } from "../protocols/protocols.js";
 
-const sticky_note = joi.object<reminder>({
+const sticky_note = joi.object<Reminder>({
     description: joi.string().required()
-})
+});
 
-export default sticky_note
+export default sticky_note;

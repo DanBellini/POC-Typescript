@@ -7,6 +7,6 @@ function validateDescription (description: string): string{
         return err = `Description is invalid`;
     }
     return err = "";
-}
+};
 
 export {validateDescription};

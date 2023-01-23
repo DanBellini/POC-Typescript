@@ -1,8 +1,8 @@
 import { ObjectSchema } from "joi";
-import { reminder } from "../protocols/protocols";
+import { Reminder } from "../protocols/protocols.js";
 import { NextFunction, Response, Request } from "express";
 
-function validationSchema(schema: ObjectSchema<reminder>, err: number):ValidationMiddleware{
+function validationSchema(schema: ObjectSchema<Reminder>, err: number):ValidationMiddleware{
     return (req: Request, res: Response, next: NextFunction) => { 
       const {error} = schema.validate(req.body, {abortEarly: false});
       if (error) {
