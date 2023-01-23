@@ -1,0 +1,6 @@
+CREATE TABLE sticky_notes (
+	id SERIAL PRIMARY KEY,
+	description TEXT NOT NULL,
+	done BOOLEAN NOT NULL DEFAULT false,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
