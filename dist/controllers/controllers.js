@@ -34,12 +34,122 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+import { deleteStickyNoteFromId, insertIntoNewReminder, selectAllStickNotes, selectOneStickNote, updateStickyNoteFromId } from "../repositories/repository.js";
+import { validateDescription } from "../services/services.js";
 function checkApiHealth(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            res.send("API response correct");
-            return [2 /*return*/];
+            return [2 /*return*/, res.send("API response correct")];
         });
     });
 }
-export { checkApiHealth };
+function postNewStickyNotes(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var description, error, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    description = req.body.description;
+                    error = validateDescription(description);
+                    if (error)
+                        return [2 /*return*/, res.send(error).status(400)];
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, insertIntoNewReminder(description)];
+                case 2:
+                    _a.sent();
+                    res.sendStatus(201);
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_1 = _a.sent();
+                    console.log(error_1);
+                    return [2 /*return*/, res.sendStatus(500)];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+function getAllStickyNotes(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var result, error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, selectAllStickNotes()];
+                case 1:
+                    result = _a.sent();
+                    if (!result.rows[0])
+                        return [2 /*return*/, res.status(200).send("Nothing Stickys Notes")];
+                    return [2 /*return*/, res.status(200).send(result.rows)];
+                case 2:
+                    error_2 = _a.sent();
+                    console.log(error_2);
+                    return [2 /*return*/, res.sendStatus(500)];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+function updateStickyNote(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var params, id, search, valueDone, done, error_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    params = req.params.id;
+                    id = Number(params);
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 4, , 5]);
+                    return [4 /*yield*/, selectOneStickNote(id)];
+                case 2:
+                    search = _a.sent();
+                    if (!search.rows[0])
+                        return [2 /*return*/, res.status(400).send("not find Sticky Note")];
+                    valueDone = search.rows[0].done;
+                    done = !valueDone;
+                    return [4 /*yield*/, updateStickyNoteFromId(done, id)];
+                case 3:
+                    _a.sent();
+                    return [2 /*return*/, res.status(200).send("update Sticky Note from id=".concat(id))];
+                case 4:
+                    error_3 = _a.sent();
+                    console.log(error_3);
+                    return [2 /*return*/, res.sendStatus(500)];
+                case 5: return [2 /*return*/];
+            }
+        });
+    });
+}
+function deleteStickyNote(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var params, id, search, error_4;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    params = req.params.id;
+                    id = Number(params);
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 4, , 5]);
+                    return [4 /*yield*/, selectOneStickNote(id)];
+                case 2:
+                    search = _a.sent();
+                    if (!search.rows[0])
+                        return [2 /*return*/, res.status(400).send("not find Sticky Note")];
+                    return [4 /*yield*/, deleteStickyNoteFromId(id)];
+                case 3:
+                    _a.sent();
+                    return [2 /*return*/, res.status(200).send("Sticky Note from id = ".concat(id, " deleted"))];
+                case 4:
+                    error_4 = _a.sent();
+                    console.log(error_4);
+                    return [2 /*return*/, res.sendStatus(500)];
+                case 5: return [2 /*return*/];
+            }
+        });
+    });
+}
+export { checkApiHealth, postNewStickyNotes, getAllStickyNotes, updateStickyNote, deleteStickyNote };

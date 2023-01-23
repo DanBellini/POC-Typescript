@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import genericRouter from "./routes/route";
+import genericRouter from "./routes/route.js";
 dotenv.config();
 var app = express();
 app.use(cors());
