@@ -1,0 +1,11 @@
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import genericRouter from "./routes/route";
+dotenv.config();
+var app = express();
+app.use(cors());
+app.use(express.json());
+app.use(genericRouter);
+var port = process.env.PORT;
+app.listen(port, function () { return console.log("Server running in port ".concat(port)); });
